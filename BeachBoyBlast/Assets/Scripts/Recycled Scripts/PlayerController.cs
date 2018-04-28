@@ -17,13 +17,13 @@ public class PlayerController : MonoBehaviour {
 
 	// Jumping variables
 	float upTime;
-	float gravity2D;
-	float maxJumpVelocity;
-	float minJumpVelocity;
+	float gravity;
+	float maxJumpvelocity;
+	float minJumpvelocity;
 	float velocityXSmoothing;
 
 	// T H E M O S T I M P O R T A N T
-	public Vector3 velocity2D;
+	public Vector3 velocity;
 	// S E C O N D I M P O R T A N T
 	public Vector2 input2D;
 
@@ -39,9 +39,9 @@ public class PlayerController : MonoBehaviour {
 		handler = GetComponent<Raycast2DHandler> ();
 		boxCollider = GetComponent<BoxCollider2D> ();
 		// Declare and calculate gravity
-		gravity2D = -(2 * (maxJumpHeight) / Mathf.Pow(timeToMaxJump, 2));
-		maxJumpVelocity = Mathf.Abs(gravity2D) * timeToMaxJump;
-		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity2D) * minJumpHeight);
+		gravity = -(2 * (maxJumpHeight) / Mathf.Pow(timeToMaxJump, 2));
+		maxJumpvelocity = Mathf.Abs(gravity) * timeToMaxJump;
+		minJumpvelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
 	}
 
 	// Update is called once per frame
@@ -49,13 +49,13 @@ public class PlayerController : MonoBehaviour {
 		// Get movement axis
 		input2D = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
-		float targetVelocityX = input2D.x * moveSpeed;
+		float targetvelocityX = input2D.x * moveSpeed;
 
-		velocity2D.x = Mathf.SmoothDamp (velocity2D.x, targetVelocityX, ref velocityXSmoothing, (handler.collisions2D.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+		velocity.x = Mathf.SmoothDamp (velocity.x, targetvelocityX, ref velocityXSmoothing, (handler.collisions2D.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
 		// Grounded check
 		if (handler.collisions2D.above || handler.collisions2D.below) {
-			velocity2D.y = 0;
+			velocity.y = 0;
 		}
 
 		Jump ();
@@ -64,8 +64,8 @@ public class PlayerController : MonoBehaviour {
 
 		Reset();
 
-		velocity2D.y += gravity2D * Time.deltaTime;
-		handler.Move (velocity2D * Time.deltaTime);
+		velocity.y += gravity * Time.deltaTime;
+		handler.Move (velocity * Time.deltaTime);
 	}
 		
 	public void Movement() {
@@ -87,22 +87,22 @@ public class PlayerController : MonoBehaviour {
 
 			if (handler.collisions2D.below) {
 				
-				velocity2D.y = maxJumpVelocity;
+				velocity.y = maxJumpvelocity;
 			}
 		}
 
 		if (Input.GetButtonUp ("Jump")) {
 			
-			if (velocity2D.y > minJumpVelocity) {
+			if (velocity.y > minJumpvelocity) {
 				
-				velocity2D.y = minJumpVelocity;
+				velocity.y = minJumpvelocity;
 			}
 		}
 	}
 
 	public void Reset() {
-		if (velocity2D.x <= 0.01f && velocity2D.x >= -0.1f) {
-			velocity2D.x = 0;
+		if (velocity.x <= 0.01f && velocity.x >= -0.1f) {
+			velocity.x = 0;
 			// animator.SetBool ("isMoving", false);
 		}
 
