@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (BoxCollider2D))]
-public class Raycast2DHandler : UniversalRaycastHandler {
+public class RaycastController : UniversalRaycastHandler {
 
 	public float maxClimbingAngle = 60;
 	public float maxDescendAngle = 60;
 
-	public CollisionInfo collisions2D;
+	public CollisionInfo collisions;
 	[HideInInspector]
 	public Vector2 playerInput;
 
 	public override void Start(){
 		base.Start ();
-		collisions2D.faceDirection = 1;
+		collisions.faceDirection = 1;
 	}
 
 	// B I G G E S T I M P O R T A N T
 	public void Move(Vector3 velocity, bool standingOnPlatform = false) {
 		UpdateRaycastOrigins ();
-		collisions2D.Reset ();
-		collisions2D.velocityOld = velocity;
+		collisions.Reset ();
+		collisions.velocityOld = velocity;
 
 		if (velocity.x != 0) {
-			collisions2D.faceDirection = (int)Mathf.Sign (velocity.x);
+			collisions.faceDirection = (int)Mathf.Sign (velocity.x);
 		}
 
 		if (velocity.y < 0) {
@@ -39,12 +39,12 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 		transform.Translate (velocity);
 
 		if (standingOnPlatform == true) {
-			collisions2D.below = true;
+			collisions.below = true;
 		}
 	}
 		
 	void HorizontalCollisions(ref Vector3 velocity) {
-		float directionX = collisions2D.faceDirection;
+		float directionX = collisions.faceDirection;
 		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
 
 	if (Mathf.Abs(velocity.x) < skinWidth) {
@@ -67,13 +67,13 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 				}
 
 				if (i == 0 && slopeAngle <= maxClimbingAngle) {
-					if (collisions2D.descendingSlope) {
-						collisions2D.descendingSlope = false;
-						velocity = collisions2D.velocityOld;
+					if (collisions.descendingSlope) {
+						collisions.descendingSlope = false;
+						velocity = collisions.velocityOld;
 					}
 						
 					float distanceToSlopeStart = 0;
-					if (slopeAngle != collisions2D.slopeAngleOld) {
+					if (slopeAngle != collisions.slopeAngleOld) {
 						distanceToSlopeStart = hit2D.distance - skinWidth;
 						velocity.x -= distanceToSlopeStart * directionX;
 					}
@@ -81,12 +81,12 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 					velocity.x += distanceToSlopeStart * directionX;
 				}
 
-				if (!collisions2D.climbingSlope || slopeAngle > maxClimbingAngle) {
+				if (!collisions.climbingSlope || slopeAngle > maxClimbingAngle) {
 					velocity.x = (hit2D.distance - skinWidth) * directionX;
 					rayLength = hit2D.distance;
 
-					collisions2D.left = directionX == -1;
-					collisions2D.right = directionX == 1;
+					collisions.left = directionX == -1;
+					collisions.right = directionX == 1;
 				}
 			}
 		}
@@ -107,16 +107,16 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 				velocity.y = (hit2D.distance - skinWidth) * directionY;
 				rayLength = hit2D.distance;
 
-				if (collisions2D.climbingSlope) {
-					velocity.x = velocity.y / Mathf.Tan (collisions2D.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign (velocity.x);
+				if (collisions.climbingSlope) {
+					velocity.x = velocity.y / Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign (velocity.x);
 				}
 
-				collisions2D.below = directionY == -1;
-				collisions2D.above = directionY == 1;
+				collisions.below = directionY == -1;
+				collisions.above = directionY == 1;
 			}
 		}
 
-		if (collisions2D.climbingSlope) {
+		if (collisions.climbingSlope) {
 			float directionX = Mathf.Sign (velocity.x);
 			rayLength = Mathf.Abs (velocity.x) + skinWidth;
 			Vector2 rayOrigin = ((directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight) + Vector2.up * velocity.y;
@@ -124,9 +124,9 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 
 			if (hit) {
 				float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
-				if (slopeAngle != collisions2D.slopeAngle) {
+				if (slopeAngle != collisions.slopeAngle) {
 					velocity.x = (hit.distance - skinWidth) * directionX; 
-					collisions2D.slopeAngle = slopeAngle;
+					collisions.slopeAngle = slopeAngle;
 				}
 			}
 		}
@@ -140,9 +140,9 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 			velocity.y = climbingVelocityY;
 			velocity.x = Mathf.Cos (slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign (velocity.x);
 
-			collisions2D.below = true;
-			collisions2D.climbingSlope = true;
-			collisions2D.slopeAngle = slopeAngle;
+			collisions.below = true;
+			collisions.climbingSlope = true;
+			collisions.slopeAngle = slopeAngle;
 		}
 	}
 		
@@ -161,9 +161,9 @@ public class Raycast2DHandler : UniversalRaycastHandler {
 						velocity.x = Mathf.Cos (slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign (velocity.x);
 						velocity.y -= descendingVelocityY;
 
-						collisions2D.slopeAngle = slopeAngle;
-						collisions2D.descendingSlope = true;
-						collisions2D.below = true;
+						collisions.slopeAngle = slopeAngle;
+						collisions.descendingSlope = true;
+						collisions.below = true;
 					}
 				}
 			}

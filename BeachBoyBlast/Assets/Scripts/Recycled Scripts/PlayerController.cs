@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent (typeof (Raycast2DHandler))]
+[RequireComponent (typeof (RaycastController))]
 
 public class PlayerController : MonoBehaviour {
 
@@ -31,12 +31,12 @@ public class PlayerController : MonoBehaviour {
 
 	public SpriteRenderer spriteRenderer;
 
-	Raycast2DHandler handler;
+	public RaycastController handler;
 	BoxCollider2D boxCollider;
 
 	// Use this for initialization
 	void Start () {
-		handler = GetComponent<Raycast2DHandler> ();
+		handler = GetComponent<RaycastController> ();
 		boxCollider = GetComponent<BoxCollider2D> ();
 		// Declare and calculate gravity
 		gravity = -(2 * (maxJumpHeight) / Mathf.Pow(timeToMaxJump, 2));
@@ -51,10 +51,10 @@ public class PlayerController : MonoBehaviour {
 
 		float targetvelocityX = input2D.x * moveSpeed;
 
-		velocity.x = Mathf.SmoothDamp (velocity.x, targetvelocityX, ref velocityXSmoothing, (handler.collisions2D.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+		velocity.x = Mathf.SmoothDamp (velocity.x, targetvelocityX, ref velocityXSmoothing, (handler.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
 		// Grounded check
-		if (handler.collisions2D.above || handler.collisions2D.below) {
+		if (handler.collisions.above || handler.collisions.below) {
 			velocity.y = 0;
 		}
 
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 	}
 		
 	public void Movement() {
-		if (handler.collisions2D.below) {
+		if (handler.collisions.below) {
 			
 			// animator.SetBool ("isGrounded", true);
 
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour {
 			
 			// animator.SetBool ("isGrounded", false);
 
-			if (handler.collisions2D.below) {
+			if (handler.collisions.below) {
 				
 				velocity.y = maxJumpvelocity;
 			}
