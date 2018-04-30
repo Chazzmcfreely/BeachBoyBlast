@@ -30,7 +30,6 @@ public class Ball : MonoBehaviour {
 
 		if (playerController.handler.collisions.below) {
 			addForceCheck = true;
-			Debug.Log (addForceCheck);
 		}
 	}
 
