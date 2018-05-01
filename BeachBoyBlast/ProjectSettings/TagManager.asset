@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Head
   - Ground
+  - Player 1 Head
   layers:
   - Default
   - TransparentFX
