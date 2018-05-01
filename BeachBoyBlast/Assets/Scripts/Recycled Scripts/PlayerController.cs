@@ -7,6 +7,17 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    public enum PlayerNum     {         Player1,         Player2     }
+
+
+    private GameObject[] players = new GameObject[2];
+    private List<BoxCollider2D> playerColliders = new List<BoxCollider2D>();
+
+    public PlayerNum playerNum;
+    //string self;
+    string enemy;     string color;     string rightHorizontal;     string rightVertical;     string dash;     string teleport;
+    string horizontalMove;     string verticalMove;     string jump;
+
 	// Public float declaration
 	public float moveSpeed = 6;
 	public float maxJumpHeight = 5;
@@ -38,17 +49,30 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		handler = GetComponent<RaycastController> ();
 		boxCollider = GetComponent<BoxCollider2D> ();
-
+        players[0] = GameObject.FindGameObjectWithTag("Player1");
+        players[1] = GameObject.FindGameObjectWithTag("Player2");
 		// Declare and calculate gravity
 		gravity = -(2 * (maxJumpHeight) / Mathf.Pow(timeToMaxJump, 2));
 		maxJumpvelocity = Mathf.Abs(gravity) * timeToMaxJump;
 		minJumpvelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+
+
+         if(playerNum == PlayerNum.Player1){             horizontalMove = "Horizontal";             verticalMove = "Vertical";             jump = "Jump";            // self = "Player1";             enemy = "Player2";             color = "Red";             rightHorizontal = "RightHorizontal";             rightVertical = "RightVertical";             dash = "Dash";             teleport = "Teleport";           }
+        else if(playerNum == PlayerNum.Player2){             horizontalMove = "P2Horizontal";             verticalMove = "P2Vertical";             jump = "P2Jump"; //needs to be different             //self = "Player2";             enemy = "Player1";             color = "Blue";             rightHorizontal = "P2RightHorizontal";             rightVertical = "P2RightVertical";             dash = "P2Dash";             teleport = "P2Teleport";}
+
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            playerColliders.Add(players[i].GetComponent<BoxCollider2D>());
+            //Debug.Log(players[i].name);
+        }
+
 	}
 
 	// Update is called once per frame
 	void Update () {
 		// Get movement axis
-		input2D = new Vector2 (Input.GetAxisRaw ("Horizontal1"), Input.GetAxisRaw ("Vertical1"));
+		input2D = new Vector2 (Input.GetAxisRaw (horizontalMove), Input.GetAxisRaw (verticalMove));
 
 		float targetvelocityX = input2D.x * moveSpeed;
 
@@ -74,7 +98,7 @@ public class PlayerController : MonoBehaviour {
 			
 			// animator.SetBool ("isGrounded", true);
 
-			if (Input.GetAxis("Horizontal") != 0.0f) {
+            if (Input.GetAxis(horizontalMove) != 0.0f) {
 				
 				// animator.SetBool ("isMoving", true);
 			}
@@ -82,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 	}
 		
 	public void Jump() {
-		if (Input.GetKeyDown (KeyCode.W)) {
+		if (Input.GetButtonDown (jump)) {
 			
 			// animator.SetBool ("isGrounded", false);
 
@@ -92,7 +116,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyUp (KeyCode.W)) {
+		if (Input.GetButtonUp (jump)) {
 			
 			if (velocity.y > minJumpvelocity) {
 				
