@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		handler = GetComponent<RaycastController> ();
 		boxCollider = GetComponent<BoxCollider2D> ();
+
 		// Declare and calculate gravity
 		gravity = -(2 * (maxJumpHeight) / Mathf.Pow(timeToMaxJump, 2));
 		maxJumpvelocity = Mathf.Abs(gravity) * timeToMaxJump;
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Get movement axis
-		input2D = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+		input2D = new Vector2 (Input.GetAxisRaw ("Horizontal1"), Input.GetAxisRaw ("Vertical1"));
 
 		float targetvelocityX = input2D.x * moveSpeed;
 
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 	}
 		
 	public void Jump() {
-		if (Input.GetButtonDown ("Jump")) {
+		if (Input.GetKeyDown (KeyCode.W)) {
 			
 			// animator.SetBool ("isGrounded", false);
 
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetButtonUp ("Jump")) {
+		if (Input.GetKeyUp (KeyCode.W)) {
 			
 			if (velocity.y > minJumpvelocity) {
 				
@@ -105,15 +106,5 @@ public class PlayerController : MonoBehaviour {
 			velocity.x = 0;
 			// animator.SetBool ("isMoving", false);
 		}
-
-		if(Input.GetAxis("Horizontal") == 1.0f) {
-			spriteRenderer.flipX = false;
-		} else if (Input.GetAxis("Horizontal") == -1.0f) {
-			spriteRenderer.flipX = true;
-		}
-	}
-
-	void OnTriggerEnter2D(Collider2D collider) {
-		
 	}
 }

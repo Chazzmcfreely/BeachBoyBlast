@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour {
 
-	public PlayerController playerController;
+	public PlayerController playerController1;
 
-	public RaycastController raycastController;
+	public RaycastController raycastController1;
 
 	public float yForce;
 
 	public float yForceMax;
 
+	public string thePointGoesTo;
+
+	public Text scoreTextPlayer1;
+
 	float playerVelocity;
-	float xForceDependOnPlayer;
+	float xForceDependOnPlayer1;
 
 	bool addForceCheck;
 
@@ -26,9 +31,11 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		xForceDependOnPlayer = playerController.velocity.x;
+		xForceDependOnPlayer1 = playerController1.velocity.x;
 
-		if (playerController.handler.collisions.below) {
+		Debug.Log (thePointGoesTo);
+
+		if (playerController1.handler.collisions.below) {
 			addForceCheck = true;
 		}
 	}
@@ -42,23 +49,18 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D collider) {
-		if (collider.gameObject.tag == "Head") {
+		if (collider.gameObject.tag == "Player 1 Head") {
 			if (addForceCheck == true) {
-				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer, yForce, 0), ForceMode2D.Impulse);
+				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer1, yForce, 0), ForceMode2D.Impulse);
 				addForceCheck = false;
+				thePointGoesTo = "Player 1";
 			}
 		}
 
 		if (collider.gameObject.tag == "Ground") {
-			StartCoroutine ("Respawn_");
+			transform.position = new Vector3 (0.0f, 5.0f, 0.0f);
+
+			rigidBody2D.velocity = new Vector2 (0.0f, 0.0f);
 		}
-	}
-
-	IEnumerator Respawn_() {
-		transform.position = new Vector3 (0.0f, 5.0f, 0.0f);
-
-		rigidBody2D.velocity = new Vector2 (0.0f, 0.0f);
-
-		yield return new WaitForSeconds (0.2f);
 	}
 }
