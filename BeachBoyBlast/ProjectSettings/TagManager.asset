@@ -8,6 +8,9 @@ TagManager:
   - Player 1 Head
   - Player1
   - Player2
+  - Player 2 Head
+  - Player 1 Zone
+  - Player 2 Zone
   layers:
   - Default
   - TransparentFX

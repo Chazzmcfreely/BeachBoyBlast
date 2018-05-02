@@ -6,28 +6,28 @@ using UnityEngine.UI;
 public class Ball : MonoBehaviour {
 
 	public PlayerController playerController1;
+	public PlayerController playerController2;
 
 	public RaycastController raycastController1;
+	public RaycastController raycastController2;
 
 	public float yForce;
 
 	public float yForceMax;
 
-	public string thePointGoesTo;
-
-	public Text scoreTextPlayer1;
-
 	float playerVelocity;
-	float xForceDependOnPlayer1;
 
-	bool addForceCheck;
+	float xForceDependOnPlayer1;
+	float xForceDependOnPlayer2;
+
+	bool addForceCheck1;
+	bool addForceCheck2;
 
 	Rigidbody2D rigidBody2D;
 
     public Transform arrow;
 
- 
-
+	public GameManager gameManager;
 
 	// Use this for initialization
 	void Start () {
@@ -36,16 +36,28 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log (xForceDependOnPlayer2);
+
+		xForceDependOnPlayer1 = playerController1.velocity.x;
+		xForceDependOnPlayer2 = playerController2.velocity.x;
+
         Vector3 arrowPosition = new Vector3(transform.position.x, 4.5f, 0f);	
-
-		Debug.Log (thePointGoesTo);
-
+	
 		if (playerController1.handler.collisions.below) {
-			addForceCheck = true;
+			addForceCheck1 = true;
 		}
 
+		if (playerController2.handler.collisions.below) {
+			addForceCheck2 = true;
+		}
+			
         arrow.position = arrowPosition;
-        arrow.gameObject.SetActive(false);         if(transform.position.y >= 5){             arrow.gameObject.SetActive(true);         }  
+        arrow.gameObject.SetActive(false);
+        if(transform.position.y >= 5){
+            arrow.gameObject.SetActive(true);
+        }
+
+
 	}
 
 	void FixedUpdate()
@@ -58,11 +70,25 @@ public class Ball : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.gameObject.tag == "Player 1 Head") {
-			if (addForceCheck == true) {
+			if (addForceCheck1 == true) {
 				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer1, yForce, 0), ForceMode2D.Impulse);
-				addForceCheck = false;
-				thePointGoesTo = "Player 1";
+				addForceCheck1 = false;
 			}
+		}
+
+		if (collider.gameObject.tag == "Player 2 Head") {
+			if (addForceCheck2 == true) {
+				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer2, yForce, 0), ForceMode2D.Impulse);
+				addForceCheck2 = false;
+			}
+		}
+
+		if (collider.gameObject.tag == "Player 1 Zone") {
+			gameManager.player1Score++;
+		}
+
+		if (collider.gameObject.tag == "Player 2 Zone") {
+			gameManager.player2Score++;
 		}
 
 		if (collider.gameObject.tag == "Ground") {
