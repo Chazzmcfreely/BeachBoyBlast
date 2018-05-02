@@ -29,6 +29,8 @@ public class Ball : MonoBehaviour {
 
 	public GameManager gameManager;
 
+    public ScoreManager scoreManager;
+
 	public ParticleSystem sparkleSystem1;
 	public ParticleSystem sparkleSystem2;
 
@@ -93,11 +95,13 @@ public class Ball : MonoBehaviour {
 		if (collider.gameObject.tag == "Player 1 Zone") {
 			sparkleSystem1.Emit (Random.Range (3, 5));
 			gameManager.player1Score++;
+            scoreManager.player1Score++;
 		}
 
 		if (collider.gameObject.tag == "Player 2 Zone") {
 			sparkleSystem2.Emit (Random.Range (3, 5));
 			gameManager.player2Score++;
+            scoreManager.player2Score++;
 		}
 
 		if (collider.gameObject.tag == "Ground") {

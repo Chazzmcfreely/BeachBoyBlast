@@ -1,12 +1,9 @@
 ﻿<Properties StartupConfiguration="{3291A079-5405-3748-6ED4-D5CA0D492CBF}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Ball.cs">
     <Files>
-      <File FileName="Assets/Scripts/MainMenuButtonScript.cs" Line="26" Column="1" />
-      <File FileName="Assets/Scripts/Recycled Scripts/PlayerController.cs" Line="71" Column="9" />
-      <File FileName="Assets/Scripts/Recycled Scripts/RaycastController.cs" Line="1" Column="1" />
-      <File FileName="../../../GameDevGame/Game Dev Project/Assets/Scripts/Player.cs" Line="119" Column="10" />
-      <File FileName="../../../GameDevGame/Game Dev Project/Assets/Scripts/Controller2D.cs" Line="261" Column="34" />
-      <File FileName="Assets/Scripts/Ball.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Recycled Scripts/PlayerController.cs" Line="122" Column="49" />
+      <File FileName="Assets/Scripts/Ball.cs" Line="30" Column="26" />
+      <File FileName="Assets/Scripts/ScoreManager.cs" Line="8" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
