@@ -24,6 +24,11 @@ public class Ball : MonoBehaviour {
 
 	Rigidbody2D rigidBody2D;
 
+    public Transform arrow;
+
+ 
+
+
 	// Use this for initialization
 	void Start () {
 		rigidBody2D = GetComponent<Rigidbody2D>();
@@ -31,13 +36,16 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		xForceDependOnPlayer1 = playerController1.velocity.x;
+        Vector3 arrowPosition = new Vector3(transform.position.x, 4.5f, 0f);	
 
 		Debug.Log (thePointGoesTo);
 
 		if (playerController1.handler.collisions.below) {
 			addForceCheck = true;
 		}
+
+        arrow.position = arrowPosition;
+        arrow.gameObject.SetActive(false);         if(transform.position.y >= 5){             arrow.gameObject.SetActive(true);         }  
 	}
 
 	void FixedUpdate()
