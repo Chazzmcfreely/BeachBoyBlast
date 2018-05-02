@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -25,5 +26,13 @@ public class GameManager : MonoBehaviour {
 		player1ScoreText.text = "" + player1Score;
 
 		player2ScoreText.text = "" + player2Score;
+
+		if (player1Score == 6) {
+			SceneManager.LoadScene ("End Scene");
+		}
+
+		if (player2Score == 6) {
+			SceneManager.LoadScene ("End Scene");
+		}
 	}
 }
