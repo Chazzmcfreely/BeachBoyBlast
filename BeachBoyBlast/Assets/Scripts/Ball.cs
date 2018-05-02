@@ -29,6 +29,9 @@ public class Ball : MonoBehaviour {
 
 	public GameManager gameManager;
 
+	public ParticleSystem sparkleSystem1;
+	public ParticleSystem sparkleSystem2;
+
 	// Use this for initialization
 	void Start () {
 		rigidBody2D = GetComponent<Rigidbody2D>();
@@ -72,6 +75,7 @@ public class Ball : MonoBehaviour {
 		if (collider.gameObject.tag == "Player 1 Head") {
 			if (addForceCheck1 == true) {
 				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer1, yForce, 0), ForceMode2D.Impulse);
+				sparkleSystem1.Emit (Random.Range (5, 8));
 				addForceCheck1 = false;
 			}
 		}
@@ -79,6 +83,7 @@ public class Ball : MonoBehaviour {
 		if (collider.gameObject.tag == "Player 2 Head") {
 			if (addForceCheck2 == true) {
 				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer2, yForce, 0), ForceMode2D.Impulse);
+				sparkleSystem2.Emit (Random.Range (5, 8));
 				addForceCheck2 = false;
 			}
 		}

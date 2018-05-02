@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour {
 
     public enum PlayerNum     {         Player1,         Player2     }
 
-
     private GameObject[] players = new GameObject[2];
     private List<BoxCollider2D> playerColliders = new List<BoxCollider2D>();
 
@@ -95,20 +94,15 @@ public class PlayerController : MonoBehaviour {
 		
 	public void Movement() {
 		if (handler.collisions.below) {
-			
-			// animator.SetBool ("isGrounded", true);
 
             if (Input.GetAxis(horizontalMove) != 0.0f) {
-				
-				// animator.SetBool ("isMoving", true);
+
 			}
 		}
 	}
 		
 	public void Jump() {
 		if (Input.GetButtonDown (jump)) {
-			
-			// animator.SetBool ("isGrounded", false);
 
 			if (handler.collisions.below) {
 				
@@ -128,7 +122,6 @@ public class PlayerController : MonoBehaviour {
 	public void Reset() {
 		if (velocity.x <= 0.01f && velocity.x >= -0.1f) {
 			velocity.x = 0;
-			// animator.SetBool ("isMoving", false);
 		}
 	}
 }
