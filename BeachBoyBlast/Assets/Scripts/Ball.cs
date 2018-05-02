@@ -32,6 +32,8 @@ public class Ball : MonoBehaviour {
 	public ParticleSystem sparkleSystem1;
 	public ParticleSystem sparkleSystem2;
 
+	public AudioSource ballHit;
+
 	// Use this for initialization
 	void Start () {
 		rigidBody2D = GetComponent<Rigidbody2D>();
@@ -74,25 +76,27 @@ public class Ball : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.gameObject.tag == "Player 1 Head") {
 			if (addForceCheck1 == true) {
+				ballHit.Play ();
 				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer1, yForce, 0), ForceMode2D.Impulse);
-				sparkleSystem1.Emit (Random.Range (5, 8));
 				addForceCheck1 = false;
 			}
 		}
 
 		if (collider.gameObject.tag == "Player 2 Head") {
 			if (addForceCheck2 == true) {
+				ballHit.Play ();
 				rigidBody2D.AddForce (new Vector3 (xForceDependOnPlayer2, yForce, 0), ForceMode2D.Impulse);
-				sparkleSystem2.Emit (Random.Range (5, 8));
 				addForceCheck2 = false;
 			}
 		}
 
 		if (collider.gameObject.tag == "Player 1 Zone") {
+			sparkleSystem1.Emit (Random.Range (3, 5));
 			gameManager.player1Score++;
 		}
 
 		if (collider.gameObject.tag == "Player 2 Zone") {
+			sparkleSystem2.Emit (Random.Range (3, 5));
 			gameManager.player2Score++;
 		}
 

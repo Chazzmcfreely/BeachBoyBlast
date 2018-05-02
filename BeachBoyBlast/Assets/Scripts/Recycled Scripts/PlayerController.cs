@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour {
 	public RaycastController handler;
 	BoxCollider2D boxCollider;
 
+	public AudioSource jumpSound;
+
 	// Use this for initialization
 	void Start () {
 		handler = GetComponent<RaycastController> ();
@@ -105,7 +107,7 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButtonDown (jump)) {
 
 			if (handler.collisions.below) {
-				
+				jumpSound.Play ();
 				velocity.y = maxJumpvelocity;
 			}
 		}
