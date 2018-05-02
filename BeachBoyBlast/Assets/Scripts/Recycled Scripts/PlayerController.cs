@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
 
     public enum PlayerNum     {         Player1,         Player2     }
 
+    public ScoreManager scoreManager;
+
     private GameObject[] players = new GameObject[2];
     private List<BoxCollider2D> playerColliders = new List<BoxCollider2D>();
 
@@ -16,6 +18,10 @@ public class PlayerController : MonoBehaviour {
     //string self;
     string enemy;     string color;     string rightHorizontal;     string rightVertical;     string dash;     string teleport;
     string horizontalMove;     string verticalMove;     string jump;
+    int score;
+
+    public Image[] scoreNums = new Image[6];
+
 
 	// Public float declaration
 	public float moveSpeed = 6;
@@ -73,6 +79,28 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Get movement axis
+        if (playerNum == PlayerNum.Player1)
+        {
+            score = scoreManager.player1Score;
+           
+        }
+        else if (playerNum == PlayerNum.Player2)
+        {
+            score = scoreManager.player2Score;
+        
+        }
+
+        for (int i = 0; i < scoreNums.Length; i++)
+           {             if (i == score)
+            {                 scoreNums[i].gameObject.SetActive(true);             }             else
+            {                 scoreNums[i].gameObject.SetActive(false);             }          }
+
+
+
+
+
+
+
 		input2D = new Vector2 (Input.GetAxisRaw (horizontalMove), Input.GetAxisRaw (verticalMove));
 
 		float targetvelocityX = input2D.x * moveSpeed;
